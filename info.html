@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Info</title>
+    <style>
+        /* Define la fuente personalizada */
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('fuente.ttf') format('truetype');
+        }
+
+        /* Aplica estilos generales al body */
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #000000, #8b008b);
+            color: white;
+            font-size: 20px;
+            transition: background 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            font-family: 'CustomFont', sans-serif; /* Aplica la fuente personalizada al cuerpo del documento */
+        }
+
+        /* Aplica la fuente personalizada solo a los elementos deseados */
+        #gameTitle,
+        #slogan,
+        #menu li a,
+        .infoSection h2 {
+            font-family: 'CustomFont', sans-serif;
+        }
+
+        /* Estilo adicional para #gameTitle */
+        #gameTitle {
+            font-size: 60px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+            color: #ff1493;
+            margin-top: 70px;
+        }
+
+        /* Estilo adicional para #slogan */
+        #slogan {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff1493;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Estilo adicional para el menú */
+        #menu {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        #menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #menu li {
+            float: left;
+        }
+
+        #menu li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ff1493;
+        }
+
+        /* Estilo adicional para las secciones de información */
+        .infoSection {
+            width: 80%;
+            max-width: 800px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        .infoSection p {
+            
+           font-size: 25px;
+           font-weight: bold;
+            margin-bottom: 17px;
+            color: #ff1493;
+            
+        }
+           
+            /*font-size: 16px;
+            line-height: 1,5;
+            margin-bottom: 10px;
+            color: #ff1493; 
+            font-family: Arial,                sans-serif;/* Asegura que el color sea blanco */
+            /* Elimina la fuente personalizada para los párrafos */
+            /* Puedes especificar una fuente sans-serif estándar */
+        
+
+        /* Estilo adicional para los títulos de las secciones */
+        .infoSection h2 {
+            color: #ff1493;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para el div de carga */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #loading img {
+            width: 100px;
+            height: 100px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sonidos -->
+    <audio id="menuSound" src="mario-coin.mp3" preload="auto"></audio>
+    <audio id="pageLoadSound" src="page_load.mp3"></audio>
+
+    <div id="loading">
+        <img src="Coin9.png" alt="Cargando...">
+    </div>
+
+    <nav id="menu">
+        <ul>
+            <li><a href="#" onclick="playMenuSound('menu')">Play</a></li>
+            <li><a href="#" onclick="playMenuSound('menu')">Info</a></li>
+            <li><a href="#" onclick="playMenuSound('menu')">Nft's</a></li>
+            <li><a href="#" onclick="playMenuSound('menu')">Social</a></li>
+            <li><a href="#" id="connectWallet">Wallet</a></li>
+        </ul>
+    </nav>
+
+    <div id="gameTitle">La Info</div>
+    <div id="slogan">¡Consigue Nft's!</div>
+
+    <div class="infoSection">
+        <h2>Cómo Funciona</h2>
+        <p>En nuestro sistema, cada clic que generas se acumula en tu cuenta. Cuando alcanzas 100,000 clics, puedes canjearlos por un NFT.</p>
+    </div>
+
+    <div class="infoSection">
+        <h2>Canjea tus Clics</h2>
+        <p>Cada 100,000 clics equivalen a 1 NFT. Estos NFT son boletos de lotería que te permiten participar en sorteos registrados en la blockchain.</p>
+    </div>
+
+    <div class="infoSection">
+        <h2>Sorteos y Beneficios</h2>
+        <p>Los sorteos se realizan periódicamente, y los premios incluyen beneficios proporcionados por nuestros sponsors, inversores y publicidad.</p>
+    </div>
+
+    <div class="infoSection">
+        <h2>Seguridad y Transparencia</h2>
+        <p>Todos los sorteos y transacciones son registrados en la blockchain, asegurando la transparencia y seguridad de nuestro sistema.</p>
+    </div>
+
+    <!-- Nueva sección añadida -->
+    <div class="infoSection">
+        <h2>Síguenos en Redes Sociales</h2>
+        <p>Síguenos en nuestras redes sociales para estar al día de las últimas noticias, actualizaciones y eventos relacionados con los NFT's.</p>
+        <p>Síguenos en <a href="#">Twitter</a>, <a href="#">Instagram</a> y <a href="#">Facebook</a>.</p>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        // Función para reproducir sonido del menú
+        function playMenuSound(source) {
+            var sound = document.getElementById("menuSound");
+            sound.currentTime = 0; // Reinicia el sonido si ya está en reproducción
+            sound.play();
+
+            // Si el clic fue en "Wallet", no reproducir el sonido de menú
+            if (source === 'menu') {
+                return false;
+            }
+        }
+
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+                try {
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    alert(`Conectado a MetaMask con la cuenta: ${account}`);
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                alert('MetaMask no está instalado. Por favor, instala MetaMask e intenta nuevamente.');
+                window.location.href = 'https://metamask.io/download.html';
+            }
+        }
+
+        // Función para reproducir sonido de carga de página
+        window.addEventListener('load', () => {
+            var sound = document.getElementById("pageLoadSound");
+            sound.currentTime = 0; // Reinicia el // sonido si ya está en reproducción
+                        sound.play();
+
+                        setTimeout(() => {
+                            // Oculta el div de carga y muestra el cuerpo de la página
+                            document.getElementById('loading').style.display = 'none';
+                            document.body.style.opacity = '1';
+                            document.body.style.visibility = 'visible';
+                        }, 500);
+                    });
+
+                    // Agregar evento click al botón de Wallet
+                    document.getElementById('connectWallet').addEventListener('click', function(event) {
+                        playMenuSound('wallet'); // Reproduce el sonido solo si no es el botón de Wallet
+                        connectMetaMask(); // Intenta conectar MetaMask
+                        event.preventDefault(); // Evita la acción predeterminada del enlace
+                    });
+                </script>
+            </body>
+
+            </html>
