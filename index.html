@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Click</title>
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('fuente.ttf') format('truetype');
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #000000, #8b008b);
+            color: white;
+            font-family: 'CustomFont', sans-serif;
+            font-size: 20px;
+            transition: background 0.3s ease;
+            opacity: 0; /* Inicialmente oculto */
+            visibility: hidden; /* Inicialmente oculto */
+        }
+
+        #gameTitle,
+        #slogan,
+        #coinButton,
+        #counter,
+        #energy,
+        #menu li a,
+        #noEnergyMessage {
+            font-family: 'CustomFont', sans-serif;
+        }
+
+        #gameTitle {
+            font-size: 60px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+            color: #ff1493;
+        }
+
+        #slogan {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff1493;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        #coinButton {
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            outline: none;
+            margin-bottom: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #coinButton img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.03s ease-in-out;
+        }
+
+        #coinButton:active img {
+            transform: scale(2.2);
+        }
+
+        #counter,
+        #energy {
+            font-size: 26px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            position: absolute;
+            bottom: 20px;
+        }
+
+        #counter {
+            left: 20px;
+            color: #00ff00;
+        }
+
+        #energy {
+            right: 15px;
+            color: white;
+        }
+
+        #menu {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        #menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #menu li {
+            float: left;
+        }
+
+        #menu li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        #menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ff1493;
+        }
+
+        #noEnergyMessage {
+            display: none;
+            color: #ff1493;
+            font-size: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #loading img {
+            width: 100px; /* Ajusta el tamaño de la imagen de carga según sea necesario */
+            height: 100px; /* Ajusta el tamaño de la imagen de carga según sea necesario */
+            animation: spin 1s linear infinite; /* Animación de rotación */
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading">
+        <img src="Coin9.png" alt="Cargando...">
+    </div>
+
+    <nav id="menu">
+        <ul>
+            <li><a href="#">&nbsp; &nbsp;Play</a></li>
+            <li><a href="#">Info</a></li>
+            <li><a href="#">Nft's</a></li>
+            <li><a href="#">Social</a></li>
+            <li><a href="#" id="connectWallet">Wallet</a></li>
+        </ul>
+    </nav>
+
+    <div id="gameTitle">CRYPTO CLICK</div>
+    <div id="slogan">¡Consigue Nft's!</div>
+    <button id="coinButton"><img src="Coin9.png" alt="Moneda"></button>
+    <div id="counter">
+        <img src="Coin9.png" alt="Moneda" style="width: 25px; height: 25px;"> <span id="clicksCounter">0</span>
+    </div>
+    <div id="energy">
+        <img src="Batery6.png" alt="Batería" style="width: 40px; height: 20px;"> <span id="energyLevel">250</span>
+    </div>
+    <div id="noEnergyMessage">No tienes suficiente energía para hacer clic.</div>
+    <audio id="clickSound" src="mariocoinedit.mp3" preload="auto"></audio>
+    <audio id="loadingSound" src="clash-royale-intro.mp3" preload="auto"></audio>
+
+    <!-- Script JavaScript -->
+    <script>
+        const coinButton = document.getElementById('coinButton');
+        const clickSound = document.getElementById('clickSound');
+        const counterDisplay = document.getElementById('clicksCounter');
+        const energyDisplay = document.getElementById('energyLevel');
+        const noEnergyMessage = document.getElementById('noEnergyMessage');
+        const loadingSound = document.getElementById('loadingSound');
+
+        let clicks = parseInt(localStorage.getItem('clicks')) || 0;
+        let energy = parseInt(localStorage.getItem('energy')) || 250;
+        let lastUpdate = parseInt(localStorage.getItem('lastUpdate')) || Date.now();
+        let clickSoundPlayed = false;
+
+        function updateDisplay() {
+            counterDisplay.textContent = clicks;
+            energyDisplay.textContent = energy;
+            energyDisplay.style.color = energy > 0 ? '#00ff00' : '#ff0000';
+            noEnergyMessage.style.display = energy > 0 ? 'none' : 'block';
+        }
+
+        function updateEnergy() {
+            const now = Date.now();
+            const elapsed = Math.floor((now - lastUpdate) / 5000);
+
+            if (elapsed > 0) {
+                energy = Math.min(250, energy + elapsed);
+                lastUpdate = now;
+                localStorage.setItem('energy', energy);
+                localStorage.setItem('lastUpdate', lastUpdate);
+                updateDisplay();
+            }
+        }
+
+        updateEnergy();
+        updateDisplay();
+
+        setInterval(updateEnergy, 5000);
+
+        coinButton.addEventListener('click', () => {
+            if (energy > 0) {
+                clicks++;
+                energy--;
+
+                if (!clickSoundPlayed) {
+                    clickSound.play();
+                    clickSoundPlayed = true; // Cambiado a true para reproducir una vez por clic
+                }
+
+                document.body.style.background = 'linear-gradient(to bottom, #000000, #8b008b, #ff1493)';
+                setTimeout(() => {
+                    document.body.style.background = 'linear-gradient(to bottom, #000000, #8b008b)';
+                }, 200);
+
+                if (navigator.vibrate) {
+                    navigator.vibrate(100);
+                }
+
+                localStorage.setItem('clicks', clicks);
+                localStorage.setItem('energy', energy);
+
+                updateDisplay();
+            }
+        });
+
+        function resizeButton() {
+            const size = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+            coinButton.style.width = `${size}px`;
+            coinButton.style.height = `${size}px`;
+        }
+
+        window.addEventListener('resize', resizeButton);
+        resizeButton();
+
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+                                try {
+                                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                                    const account = accounts[0];
+                                    alert(`Conectado a MetaMask con la cuenta: ${account}`);
+                                } catch (error) {
+                                    console.error(error);
+                                }
+                            } else {
+                                alert('MetaMask no está instalado. Por favor, instala MetaMask e intenta nuevamente.');
+                                window.location.href = 'https://metamask.io/download.html';
+                            }
+                        }
+
+                        document.getElementById('connectWallet').addEventListener('click', connectMetaMask);
+
+                        // Cuando la página se carga completamente
+                        window.addEventListener('load', () => {
+                            loadingSound.play(); // Reproduce el sonido de carga
+                            setTimeout(() => {
+                                // Oculta el div de carga y muestra el cuerpo de la página
+                                document.getElementById('loading').style.display = 'none';
+                                document.body.style.opacity = '1';
+                                document.body.style.visibility = 'visible';
+                            }, 500); // Tiempo de espera simulado para demostración; ajusta según necesites
+                        });
+                    </script>
+                </body>
+
+                </html>
