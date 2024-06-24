@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'FuentePersonalizada';
+    src: url('fuente.ttf') format('truetype');
+    /* Otros formatos de fuente aquí si es necesario */
+}
+body {
+    font-family: 'FuentePersonalizada', 'Press Start 2P', cursive;
+    /* 'Press Start 2P' es una fuente alternativa si la personalizada no se carga */
+}
+
+/* Aplica la fuente a otros elementos según sea necesario */
+#gameTitle, #slogan, #coinButton, #counter, #energy {
+    font-family: 'FuentePersonalizada', 'Press Start 2P', cursive;
+}
