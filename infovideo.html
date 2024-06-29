@@ -16,47 +16,50 @@
             align-items: center;
             background-color: black;
         }
-        iframe {
+        #player {
             position: absolute;
             top: 0;
             left: 0;
-            height: 100%;
             width: 100%;
-            border: none;
-        }
-        #volume-button {
-            position: absolute;
-            z-index: 10;
-            background-color: rgba(255, 255, 255, 0.7);
-            border: none;
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-            /* Hacer el botón invisible para el usuario */
-            opacity: 0;
-            pointer-events: none;
+            height: 100%;
         }
     </style>
 </head>
 <body>
-    <!-- Botón invisible para activar el sonido -->
-    <button id="volume-button">Activar sonido</button>
-    <!-- iframe con el video de YouTube -->
-    <iframe id="video" src="https://www.youtube.com/embed/2wzpBVTxcHU?autoplay=1&mute=1&playsinline=1&controls=0&modestbranding=1&rel=0&fs=1&iv_load_policy=3" allow="autoplay; fullscreen"></iframe>
+    <!-- Contenedor para el reproductor de YouTube -->
+    <div id="player"></div>
 
     <script>
-        // Simular clic en el botón para activar el sonido automáticamente
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('volume-button').click();
-        });
+        // Cargar la API de YouTube iframe Player
+        function onYouTubeIframeAPIReady() {
+            // Crear un nuevo reproductor de YouTube
+            const player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: '2wzpBVTxcHU', // ID del video de YouTube
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    fs: 1,
+                    iv_load_policy: 3,
+                    mute: 1, // Iniciar en silencio
+                    playsinline: 1
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
 
-        // Listener para activar el sonido al hacer clic en el botón
-        document.getElementById('volume-button').addEventListener('click', function() {
-            const iframe = document.getElementById('video');
-            const src = iframe.src;
-            iframe.src = src.replace('mute=1', 'mute=0');
-            this.style.display = 'none';
-        });
+            // Función para activar el sonido cuando el reproductor está listo
+            function onPlayerReady(event) {
+                event.target.unMute(); // Activar el sonido del reproductor
+            }
+        }
     </script>
+
+    <!-- Incluir el script de la API de YouTube iframe Player -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
